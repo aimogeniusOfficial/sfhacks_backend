@@ -27,6 +27,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/rate', geminiRouter); // Gemini route now uses our function
 app.use('/get-css', getCssRouter);
 app.use('/rate', geminiRouter); //eto dlya gemini
 app.use('/mongo', mongoRouter);
@@ -38,11 +39,8 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
   res.status(err.status || 500);
   res.render('error');
 });
