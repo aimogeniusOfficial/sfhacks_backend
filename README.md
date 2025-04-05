@@ -6,3 +6,5 @@ to run server
 - on windows powershell `PS> $env:DEBUG='myapp:*'; npm start`
 
 feel free to paste `http://localhost:3000` in your browser
+
+to play around with js, run `node play_around.js`
