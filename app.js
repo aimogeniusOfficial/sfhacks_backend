@@ -8,6 +8,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var geminiRouter = require('./routes/gemini');
 var mongoRouter = require('./routes/mongo');
+var getCssRouter = require('./routes/get-css');
 
 var app = express();
 
@@ -26,6 +27,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/get-css', getCssRouter);
 app.use('/rate', geminiRouter); //eto dlya gemini
 app.use('/mongo', mongoRouter);
 
