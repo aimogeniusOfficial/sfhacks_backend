@@ -32,20 +32,28 @@ router.get('/:url', async (req, res) => {
 router.post("/get_or_create", async (req, res) => {
     let result;
     result = await accessibilityCatalogueCollection.findOne({ url: req.body.url });
-    if (!result) {
-        const css = await getCSS(req.body.url);
-        const cssAccessibility = await evaluateCssAccessibility(css.external[0].content);
-        grade = cssAccessibility.grade;
-        review = cssAccessibility.review;
-        result = await accessibilityCatalogueCollection.insertOne({
-            url: req.body.url,
-            badge_level: grade,
-            improvement_suggestions: review,
-            created_at: Date.now(),
-            updated_at: Date.now()
-        });
+    if (result) {
+        return res.status(200).json(result);
     }
-    res.status(200).json(result);
+
+    const css = await getCSS(req.body.url);
+    const cssAccessibility = await evaluateCssAccessibility(css.external[0].content);
+    grade = cssAccessibility.grade;
+    review = cssAccessibility.review;
+    result = await accessibilityCatalogueCollection.insertOne({
+        url: req.body.url,
+        badge_level: grade,
+        improvement_suggestions: review,
+        created_at: Date.now(),
+        updated_at: Date.now()
+    });
+    res.status(200).json({
+        url: req.body.url,
+        badge_level: grade,
+        improvement_suggestions: review,
+        created_at: Date.now(),
+        updated_at: Date.now()
+    });
 });
 
 module.exports = router;
