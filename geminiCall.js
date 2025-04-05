@@ -39,7 +39,10 @@ ${cssContent}
     if (match) {
       const grade = match[1];
       const review = match[2];
-      return `Grade: ${grade}, Review: ${review}`;
+      return {
+        grade: grade,
+        review: review
+      };
     } else {
       // Fallback: if regex fails, return the cleaned text directly.
       return cleaned;
