@@ -37,6 +37,9 @@ ${cssContent}
     const response = await ai.models.generateContent({
       model: "gemini-2.0-flash",
       contents: prompt,
+      config: {
+        temperature: 0,
+      },
     });
 
     // Remove markdown code fences from the response
