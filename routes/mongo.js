@@ -23,4 +23,9 @@ router.get('/', async (req, res) => {
     res.status(200).json(result);
 });
 
+router.get('/:url', async (req, res) => {
+    const result = await accessibilityCatalogueCollection.findOne({ url: req.params.url });
+    res.status(200).json(result);
+});
+
 module.exports = router;
