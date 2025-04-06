@@ -1,9 +1,10 @@
 // geminiCall.js
+require('dotenv').config();
 const fs = require('fs');
 const pdf = require('pdf-parse');
 const { GoogleGenAI } = require('@google/genai');
 
-const ai = new GoogleGenAI({ apiKey: "AIzaSyAfxNl78GTHfml4prMlOVJNDLdMKQMhq7k" });
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 async function evaluateCssAccessibility({ externalCSS, inlineCSS, htmlContent }) {
   try {
