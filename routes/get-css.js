@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var { JSDOM } = require('jsdom');
 
-// Function to extract CSS from a URL
+// Function to extract CSS and HTML from a URL
 async function getCSS(url) {
   try {
     // Dynamically import node-fetch (v3 is an ES module)
@@ -43,6 +43,7 @@ async function getCSS(url) {
 
     return {
       http: { mainPageStatus: mainStatus },
+      html: html,
       inline: inlineStyles,
       external: externalCSS
     };
@@ -52,7 +53,7 @@ async function getCSS(url) {
   }
 }
 
-// // Route handler that uses the getCSS function
+// Uncomment below to use as an Express route handler
 // router.get('/', async function(req, res, next) {
 //   const url = req.query.url;
 //   if (!url) {
