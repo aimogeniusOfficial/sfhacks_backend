@@ -13,7 +13,7 @@ async function evaluateCssAccessibility({ externalCSS, inlineCSS, htmlContent })
     const guideText = guideData.text;
 
     // Build the prompt including external CSS, inline CSS, and HTML content
-    const prompt = `You are an expert in website accessibility evaluation. You are provided with HTML code, inline CSS, and external CSS. Evaluate the overall accessibility of the website based solely on the provided code and determine its adherence to best practices and WCAG guidelines. Consider factors such as color contrast, font legibility, text size, spacing, focus indicators, layout consistency, and semantic structure. Assign a grade from 1 (extremely poor accessibility) to 7 (excellent accessibility). Be somewhat generous, do not be too critical in grade. If you think its a big company like Amazon or something website, most likely it is good accessibility. In exactly 3-4 sentences, provide a detailed review that highlights both strengths and weaknesses along with specific, actionable recommendations for improvement. Output exactly a JSON list in the following format: [grade, "review description"]. Do not include any extra text.
+    const prompt = `You are an expert in website accessibility evaluation. You are provided with HTML code, inline CSS, and external CSS. Evaluate the overall accessibility of the website based solely on the provided code and determine its adherence to best practices and WCAG guidelines. Consider factors such as color contrast, font legibility, text size, spacing, focus indicators, layout consistency, and semantic structure. Assign a grade from 1 (extremely poor accessibility) to 7 (excellent accessibility). Be fair but not overly critical — lean slightly optimistic when in doubt. Well-established sites (e.g., Google, Apple, LinkedIn) are expected to reflect mature accessibility practices and obtain the maximum score of 7 and should score accordingly unless major issues are evident. In exactly 3-4 sentences, provide a concise overview that highlights both strengths and weaknesses along with specific, actionable recommendations for improvement. Output exactly a JSON list in the following format: [grade, "review description"]. Do not include any extra text.
 
 Guide:
 ${guideText}
@@ -30,7 +30,7 @@ External CSS:
 \`\`\`
 ${externalCSS}
 \`\`\`
-`;
+`
 
     // Request generation from the Gemini model
     const response = await ai.models.generateContent({
