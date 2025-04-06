@@ -12,8 +12,19 @@ var getCssRouter = require('./routes/get-css');
 
 var app = express();
 
+const allowedOrigins = [
+  'http://localhost:3141',
+  'http://sfhacks-frontend.fly.dev',
+];
+
 app.use(cors({
-  origin: 'http://localhost:3141'
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS not allowed'));
+    }
+  },
 }));
 
 // view engine setup
