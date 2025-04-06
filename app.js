@@ -14,7 +14,7 @@ var app = express();
 
 const allowedOrigins = [
   'http://localhost:3141',
-  'http://sfhacks-frontend.fly.dev',
+  'https://sfhacks-frontend.fly.dev',
 ];
 
 app.use(cors({
