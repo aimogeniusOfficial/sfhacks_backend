@@ -33,13 +33,32 @@ router.get('/:url', async (req, res) => {
 
 router.post("/get_or_create", async (req, res) => {
   try {
-    let result = await accessibilityCatalogueCollection.findOne({ url: req.body.url });
+    // Preprocess the URL to extract just the domain
+    let originalUrl = req.body.url;
+    
+    // Check if the URL uses HTTP (not HTTPS)
+    if (originalUrl.startsWith('http://')) {
+      return res.status(400).json({ error: "HTTP URLs are not supported. Please use HTTPS." });
+    }
+    
+    // Parse the URL to get just the domain
+    let processedUrl;
+    try {
+      const urlObj = new URL(originalUrl);
+      // Keep only the origin (protocol + hostname)
+      processedUrl = urlObj.origin + '/';
+    } catch (urlError) {
+      return res.status(400).json({ error: "Invalid URL format" });
+    }
+    
+    // Check if we already have this domain in our database
+    let result = await accessibilityCatalogueCollection.findOne({ url: processedUrl });
     if (result) {
       return res.status(200).json(result);
     }
     
     // Fetch the CSS and HTML data from the provided URL.
-    const cssData = await getCSS(req.body.url);
+    const cssData = await getCSS(originalUrl);
     // Use the first external CSS file's content, if available.
     const externalCSS = (cssData.external && cssData.external.length > 0) ? cssData.external[0].content : "";
     const inlineCSS = cssData.inline ? cssData.inline.join("\n") : "";
@@ -57,9 +76,9 @@ router.post("/get_or_create", async (req, res) => {
       ? cssAccessibility
       : { grade: "N/A", review: cssAccessibility };
 
-    // Insert the new document into the catalogue.
+    // Insert the new document into the catalogue with the processed URL.
     result = await accessibilityCatalogueCollection.insertOne({
-      url: req.body.url,
+      url: processedUrl,
       badge_level: grade,
       improvement_suggestions: review,
       created_at: Date.now(),
@@ -67,7 +86,7 @@ router.post("/get_or_create", async (req, res) => {
     });
     
     res.status(200).json({
-      url: req.body.url,
+      url: processedUrl,
       badge_level: grade,
       improvement_suggestions: review,
       created_at: Date.now(),
