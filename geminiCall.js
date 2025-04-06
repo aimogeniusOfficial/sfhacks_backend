@@ -13,7 +13,7 @@ async function evaluateCssAccessibility(cssContent) {
     const guideText = guideData.text;
 
     // Build the prompt with the guide text as context
-    const prompt = `You are an expert in CSS accessibility. Evaluate the following CSS code for accessibility in light of the guidelines provided below. Provide a grade out of 7 and a review of potential improvements in exactly 3-4 sentences. Output exactly a JSON list in the following format: [grade, "review description"]. Do not include any extra text.
+    const prompt = `You are an expert in CSS accessibility evaluation. You are provided with CSS code, and you must assess its adherence to best practices and WCAG guidelines. Evaluate factors such as color contrast, font legibility, text size, spacing, focus indicators, and overall clarity of styling. Based solely on the provided CSS, assign a grade from 1 (extremely poor accessibility) to 7 (excellent accessibility). In exactly 3-4 sentences, provide a review that highlights both strengths and weaknesses, and offer specific, actionable recommendations for improvement. Output exactly a JSON list in the following format: [grade, "review description"]. Do not include any extra text.
 
 Guidelines:
 ${guideText}
